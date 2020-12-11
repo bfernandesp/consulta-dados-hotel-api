@@ -40,5 +40,27 @@ public class HotelRepository extends Repository {
 		
 		return null;
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Hotel> buscarHotelPorCidade(Integer idCity) {
+		
+		Map<String,Object> params = new HashMap<>();
+		params.put("cityCode", idCity);
+		
+		ResponseEntity<List> response = requestApi(params, uriApiParceiroHoteis.concat("avail/").concat(String.valueOf(idCity)), HttpMethod.GET, List.class);
+		
+		if (response != null && response.getBody() != null) {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
+			List<Hotel> hoteisResponse = mapper.convertValue(response.getBody(),
+		    		new TypeReference<List<Hotel>>() {});
+			
+			return hoteisResponse;
+			
+		}
+		
+		return null;
+	}
 
 }

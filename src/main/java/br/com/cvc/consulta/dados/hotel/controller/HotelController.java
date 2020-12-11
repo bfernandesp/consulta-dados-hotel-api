@@ -29,10 +29,33 @@ public class HotelController {
 			@ApiResponse(code = 400, message = "Erro na busca dos dados do Hotel.")
 	})
 	@GetMapping("/dados-hotel")
-	public ResponseEntity relatorioReciboPdf(@RequestParam(value="idHotel", required = true) Integer idHotel) {
+	public ResponseEntity obterDadosHotel(@RequestParam(value="idHotel", required = true) Integer idHotel) {
 		log.info("Buscando Hotel > " + idHotel);
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(hotelService.obterHotel(idHotel));
 		
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@ApiOperation(value="Obter valores Hospedagem", response=ResponseEntity.class, responseContainer = "Set")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorno com os valores da hospedagem."),
+			@ApiResponse(code = 400, message = "Erro obter valores da hospedagem.")
+	})
+	@GetMapping("/hotels-city")
+	public ResponseEntity buscarHotelPorCidade(@RequestParam(value="idCity", required = true) Integer idCity,
+			@RequestParam(value="dataInicio", required = true) String dataInicio,
+			@RequestParam(value="dataFim", required = true) String dataFim,
+			@RequestParam(value="qtdAdulto", required = true) Integer qtdAdulto,
+			@RequestParam(value="qtdCrianca", required = true) Integer qtdCrianca) {
+		log.info("Buscando Hotel por cidade > " + idCity);
+		try {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(hotelService.totalViagemHoteisCidade(idCity, dataInicio, dataFim, qtdAdulto, qtdCrianca));
+		} catch (Exception e) {
+			log.error("Erro ao buscar valores da hospedagem >> " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+		}
+	}
+	
 }

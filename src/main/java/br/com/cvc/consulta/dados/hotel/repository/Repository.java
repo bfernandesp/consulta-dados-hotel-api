@@ -17,7 +17,7 @@ public class Repository {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-		
+		System.out.println(uriApi );
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(uriApi);
 		
 		params.keySet().stream().forEach((String key) -> { 

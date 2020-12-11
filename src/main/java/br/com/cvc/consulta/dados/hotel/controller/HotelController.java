@@ -23,7 +23,7 @@ public class HotelController {
 	private HotelService hotelService;
 	
 	@SuppressWarnings("rawtypes")
-	@ApiOperation(value="Obter dados Hotel", response=ResponseEntity.class, responseContainer = "Set")
+	@ApiOperation(value="Detalhes do Hotel por codigo de hotel", response=ResponseEntity.class, responseContainer = "Set")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Retorno com dados do Hotel."),
 			@ApiResponse(code = 400, message = "Erro na busca dos dados do Hotel.")
@@ -54,7 +54,7 @@ public class HotelController {
 					.body(hotelService.totalViagemHoteisCidade(idCity, dataInicio, dataFim, qtdAdulto, qtdCrianca));
 		} catch (Exception e) {
 			log.error("Erro ao buscar valores da hospedagem >> " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
 	

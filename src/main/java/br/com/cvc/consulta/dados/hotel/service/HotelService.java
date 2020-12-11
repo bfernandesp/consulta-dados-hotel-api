@@ -72,15 +72,14 @@ public class HotelService {
 				rd.setCategoryName(r.getCategoryName());
 				
 				PriceDetail pd = new PriceDetail();
-//				System.out.println(r.getPrice().getAdult());
-//				System.out.println(r.getPrice().getChild());
-//				System.out.println(r.getPrice().getAdult().divide(comissao,MathContext.DECIMAL128).setScale(2, RoundingMode.HALF_EVEN));
 				pd.setPricePerDayAdult(r.getPrice().getAdult().divide(comissao,MathContext.DECIMAL128).setScale(2, RoundingMode.HALF_EVEN));
 				pd.setPricePerDayChild(r.getPrice().getChild().divide(comissao,MathContext.DECIMAL128).setScale(2, RoundingMode.HALF_EVEN));
-				
 				rd.setPriceDetail(pd);
 				
-				rd.setTotalPrice(pd.getPricePerDayAdult().add(pd.getPricePerDayChild()).multiply(BigDecimal.valueOf(qtdDiarias)));
+				BigDecimal totalAdultos = pd.getPricePerDayAdult().multiply(BigDecimal.valueOf(qtdAdulto)).multiply(BigDecimal.valueOf(qtdDiarias));
+				BigDecimal totalCriancas = pd.getPricePerDayChild().multiply(BigDecimal.valueOf(qtdCrianca)).multiply(BigDecimal.valueOf(qtdDiarias));
+				
+				rd.setTotalPrice(totalAdultos.add(totalCriancas));
 				
 				c.getRooms().add(rd);
 			});

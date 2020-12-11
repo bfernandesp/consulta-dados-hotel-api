@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.google.gson.Gson;
 
 import br.com.cvc.consulta.dados.hotel.vo.City;
+import br.com.cvc.consulta.dados.hotel.vo.Hotel;
 
 
 @RunWith(SpringRunner.class)
@@ -45,13 +46,25 @@ public class HotelControllerTest {
 		List<City> list = new Gson().fromJson(result.andReturn().getResponse().getContentAsString(), List.class);
 		
 		for (Object obj : list) {
-			
-			City h = new Gson().fromJson(new Gson().toJson(obj), City.class);
-			assertTrue(h != null && h.getCityName().equals("Porto Seguro"));
+			City c = new Gson().fromJson(new Gson().toJson(obj), City.class);
+			assertTrue(c != null && c.getCityName().equals("Porto Seguro"));
 			break;
 		}
-		
 	}
+	
+	@Test
+	public void buscarHotel() throws Exception {
+		//http://localhost:8080/hotel/dados-hotel?idHotel=1
+		ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/hotel/dados-hotel")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.queryParam("idHotel", "1"));
+		
+		
+		Hotel hotel = new Gson().fromJson(result.andReturn().getResponse().getContentAsString(), Hotel.class);
+		
+		assertTrue(hotel != null && hotel.getId().equals(1));
+	}	
 	
 	
 }
